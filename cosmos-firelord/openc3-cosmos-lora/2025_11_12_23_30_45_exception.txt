@@ -1,0 +1,323 @@
+Exception:
+ENOENT : No such file or directory @ rb_sysopen - COM7
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/io/posix_serial_driver.rb:58:in `initialize'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/io/posix_serial_driver.rb:58:in `open'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/io/posix_serial_driver.rb:58:in `initialize'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/io/serial_driver.rb:69:in `new'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/io/serial_driver.rb:69:in `initialize'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/streams/serial_stream.rb:79:in `new'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/streams/serial_stream.rb:79:in `initialize'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/serial_interface.rb:85:in `new'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/serial_interface.rb:85:in `connect'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/tools/cmd_tlm_server/interface_thread.rb:263:in `connect'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/tools/cmd_tlm_server/interface_thread.rb:82:in `block (2 levels) in start'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/tools/cmd_tlm_server/interface_thread.rb:80:in `synchronize'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/tools/cmd_tlm_server/interface_thread.rb:80:in `block in start'
+
+Caller Backtrace:
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/top_level.rb:275:in `block in create_log_file'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/top_level.rb:273:in `synchronize'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/top_level.rb:273:in `create_log_file'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/top_level.rb:300:in `write_exception_file'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/tools/cmd_tlm_server/interface_thread.rb:229:in `handle_connection_failed'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/tools/cmd_tlm_server/interface_thread.rb:86:in `rescue in block in start'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/tools/cmd_tlm_server/interface_thread.rb:79:in `block in start'
+
+Ruby Version: ruby 3.3.8 (2025-04-09 patchlevel 144) [x86_64-linux-musl]
+Rubygems Version: 3.7.2
+OpenC3 Version: 6.9.1
+OpenC3::PATH: /usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1
+
+Environment:
+RUBYOPT: 
+RUBYLIB: 
+GEM_PATH: 
+GEMRC: /etc/gemrc
+RI_DEVKIT: 
+GEM_HOME: /gems
+PYTHONUSERBASE: /gems/python_packages
+PATH: /usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/../bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+Ruby Path:
+  /usr/lib/ruby/gems/3.3.0/gems/pg-1.6.2-x86_64-linux-musl/lib
+  /usr/lib/ruby/gems/3.3.0/gems/csv-3.3.5/lib
+  /usr/lib/ruby/gems/3.3.0/gems/connection_pool-2.5.4/lib
+  /usr/lib/ruby/gems/3.3.0/gems/redis-client-0.26.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/hiredis-client-0.26.1/lib
+  /usr/lib/ruby/gems/3.3.0/extensions/x86_64-linux-musl/3.3.0/hiredis-client-0.26.1
+  /usr/lib/ruby/gems/3.3.0/gems/json-2.15.0/lib
+  /usr/lib/ruby/gems/3.3.0/extensions/x86_64-linux-musl/3.3.0/json-2.15.0
+  /usr/lib/ruby/gems/3.3.0/gems/matrix-0.4.3/lib
+  /usr/lib/ruby/gems/3.3.0/gems/racc-1.8.1/lib
+  /usr/lib/ruby/gems/3.3.0/extensions/x86_64-linux-musl/3.3.0/racc-1.8.1
+  /usr/lib/ruby/gems/3.3.0/gems/nokogiri-1.18.10-x86_64-linux-musl/lib
+  /usr/lib/ruby/gems/3.3.0/gems/prism-1.5.1/lib
+  /usr/lib/ruby/gems/3.3.0/extensions/x86_64-linux-musl/3.3.0/prism-1.5.1
+  /usr/lib/ruby/gems/3.3.0/gems/nio4r-2.7.4/lib
+  /usr/lib/ruby/gems/3.3.0/extensions/x86_64-linux-musl/3.3.0/nio4r-2.7.4
+  /usr/lib/ruby/gems/3.3.0/gems/puma-7.0.4/lib
+  /usr/lib/ruby/gems/3.3.0/extensions/x86_64-linux-musl/3.3.0/puma-7.0.4
+  /usr/lib/ruby/gems/3.3.0/gems/rack-3.1.16/lib
+  /usr/lib/ruby/gems/3.3.0/gems/rackup-2.2.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/rake-13.3.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/redis-5.4.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/rubyzip-2.4.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/uuidtools-2.2.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/yard-0.9.37/lib
+  /usr/lib/ruby/gems/3.3.0/gems/aws-eventstream-1.4.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/aws-partitions-1.1168.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/aws-sigv4-1.12.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/jmespath-1.6.2/lib
+  /usr/lib/ruby/gems/3.3.0/gems/aws-sdk-core-3.233.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/aws-sdk-kms-1.113.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/aws-sdk-s3-1.199.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/cbor-0.5.10.1/lib
+  /usr/lib/ruby/gems/3.3.0/extensions/x86_64-linux-musl/3.3.0/cbor-0.5.10.1
+  /usr/lib/ruby/gems/3.3.0/gems/childprocess-5.1.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/net-http-0.6.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/faraday-net_http-3.4.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/faraday-2.14.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/faraday-2.14.0/spec/external_adapters
+  /usr/lib/ruby/gems/3.3.0/gems/faraday-follow_redirects-0.4.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/multipart-post-2.4.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/faraday-multipart-1.1.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/ffi-1.17.2-x86_64-linux-musl/lib
+  /usr/lib/ruby/gems/3.3.0/gems/multi_json-1.17.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/jsonpath-1.1.5/lib
+  /usr/lib/ruby/gems/3.3.0/gems/mqtt-0.6.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/google-protobuf-4.32.1-x86_64-linux-musl/lib
+  /usr/lib/ruby/gems/3.3.0/gems/googleapis-common-protos-types-1.21.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/opentelemetry-api-1.7.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/opentelemetry-common-0.22.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/opentelemetry-registry-0.4.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/opentelemetry-semantic_conventions-1.36.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/opentelemetry-sdk-1.9.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/opentelemetry-exporter-otlp-0.30.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/opentelemetry-instrumentation-base-0.24.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/opentelemetry-instrumentation-rack-0.28.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/opentelemetry-instrumentation-action_pack-0.14.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/opentelemetry-instrumentation-aws_sdk-0.9.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/opentelemetry-instrumentation-faraday-0.29.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/opentelemetry-instrumentation-redis-0.27.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/resolv-replace-0.1.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/raabro-1.4.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/concurrent-ruby-1.3.5/lib/concurrent-ruby
+  /usr/lib/ruby/gems/3.3.0/gems/tzinfo-2.0.6/lib
+  /usr/lib/ruby/gems/3.3.0/gems/et-orbi-1.4.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/fugit-1.12.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/rufus-scheduler-3.9.2/lib
+  /usr/lib/ruby/gems/3.3.0/gems/tzinfo-data-1.2025.2/lib
+  /usr/lib/ruby/gems/3.3.0/gems/webrick-1.9.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/websocket-1.2.11/lib
+  /usr/lib/ruby/gems/3.3.0/gems/websocket-native-1.0.0/lib
+  /usr/lib/ruby/gems/3.3.0/extensions/x86_64-linux-musl/3.3.0/websocket-native-1.0.0
+  /usr/lib/ruby/gems/3.3.0/gems/rb-fsevent-0.11.2/lib
+  /usr/lib/ruby/gems/3.3.0/gems/rb-inotify-0.11.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/listen-3.9.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib
+  /usr/lib/ruby/gems/3.3.0/extensions/x86_64-linux-musl/3.3.0/openc3-6.9.1
+  /usr/lib/ruby/gems/3.3.0/gems/resolv-0.6.2/lib
+  /usr/lib/ruby/gems/3.3.0/extensions/x86_64-linux-musl/3.3.0/resolv-0.6.2
+  /usr/lib/ruby/gems/3.3.0/gems/timeout-0.4.3/lib
+  /usr/lib/ruby/gems/3.3.0/gems/securerandom-0.4.1/lib
+  /usr/lib/ruby/gems/3.3.0/gems/date-3.4.1/lib
+  /usr/lib/ruby/gems/3.3.0/extensions/x86_64-linux-musl/3.3.0/date-3.4.1
+  /usr/lib/ruby/gems/3.3.0/gems/uri-1.0.3/lib
+  /usr/lib/ruby/gems/3.3.0/gems/logger-1.7.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/prettyprint-0.2.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/pp-0.6.2/lib
+  /usr/lib/ruby/gems/3.3.0/gems/net-protocol-0.2.2/lib
+  /usr/lib/ruby/gems/3.3.0/gems/stringio-3.1.7/lib
+  /usr/lib/ruby/gems/3.3.0/extensions/x86_64-linux-musl/3.3.0/stringio-3.1.7
+  /usr/lib/ruby/gems/3.3.0/gems/erb-5.0.2/lib
+  /usr/lib/ruby/gems/3.3.0/extensions/x86_64-linux-musl/3.3.0/erb-5.0.2
+  /usr/lib/ruby/gems/3.3.0/gems/ostruct-0.6.3/lib
+  /usr/lib/ruby/gems/3.3.0/gems/drb-2.2.3/lib
+  /usr/lib/ruby/gems/3.3.0/gems/base64-0.3.0/lib
+  /usr/lib/ruby/gems/3.3.0/gems/irb-1.15.2/lib
+  /usr/lib/ruby/gems/3.3.0/gems/reline-0.6.2/lib
+  /usr/lib/ruby/gems/3.3.0/gems/io-console-0.8.1/lib
+  /usr/lib/ruby/gems/3.3.0/extensions/x86_64-linux-musl/3.3.0/io-console-0.8.1
+  /usr/lib/ruby/gems/3.3.0/gems/ruby-termios-1.1.0/lib
+  /usr/lib/ruby/gems/3.3.0/extensions/x86_64-linux-musl/3.3.0/ruby-termios-1.1.0
+  /usr/lib/site_ruby/$(ruby_ver)/x86_64-linux
+  /usr/local/lib/site_ruby/3.3.0
+  /usr/local/lib/site_ruby/3.3.0/x86_64-linux-musl
+  /usr/local/lib/site_ruby
+  /usr/lib/ruby/vendor_ruby/3.3.0
+  /usr/lib/ruby/vendor_ruby/3.3.0/x86_64-linux-musl
+  /usr/lib/ruby/vendor_ruby
+  /usr/lib/ruby/3.3.0
+  /usr/lib/ruby/3.3.0/x86_64-linux-musl
+
+Gems:
+error_highlight 0.6.0 ruby
+did_you_mean 1.6.3 ruby
+syntax_suggest 2.0.1 ruby
+bundler 2.7.2 ruby
+pg 1.6.2 x86_64-linux-musl
+csv 3.3.5 ruby
+connection_pool 2.5.4 ruby
+redis-client 0.26.1 ruby
+hiredis-client 0.26.1 ruby
+json 2.15.0 ruby
+matrix 0.4.3 ruby
+racc 1.8.1 ruby
+nokogiri 1.18.10 x86_64-linux-musl
+prism 1.5.1 ruby
+nio4r 2.7.4 ruby
+puma 7.0.4 ruby
+rack 3.1.16 ruby
+rackup 2.2.1 ruby
+rake 13.3.0 ruby
+redis 5.4.1 ruby
+rubyzip 2.4.1 ruby
+uuidtools 2.2.0 ruby
+yard 0.9.37 ruby
+aws-eventstream 1.4.0 ruby
+aws-partitions 1.1168.0 ruby
+aws-sigv4 1.12.1 ruby
+jmespath 1.6.2 ruby
+aws-sdk-core 3.233.0 ruby
+aws-sdk-kms 1.113.0 ruby
+aws-sdk-s3 1.199.1 ruby
+cbor 0.5.10.1 ruby
+childprocess 5.1.0 ruby
+net-http 0.6.0 ruby
+faraday-net_http 3.4.1 ruby
+faraday 2.14.0 ruby
+faraday-follow_redirects 0.4.0 ruby
+multipart-post 2.4.1 ruby
+faraday-multipart 1.1.1 ruby
+ffi 1.17.2 x86_64-linux-musl
+multi_json 1.17.0 ruby
+jsonpath 1.1.5 ruby
+mqtt 0.6.0 ruby
+google-protobuf 4.32.1 x86_64-linux-musl
+googleapis-common-protos-types 1.21.0 ruby
+opentelemetry-api 1.7.0 ruby
+opentelemetry-common 0.22.0 ruby
+opentelemetry-registry 0.4.0 ruby
+opentelemetry-semantic_conventions 1.36.0 ruby
+opentelemetry-sdk 1.9.0 ruby
+opentelemetry-exporter-otlp 0.30.0 ruby
+opentelemetry-instrumentation-base 0.24.0 ruby
+opentelemetry-instrumentation-rack 0.28.1 ruby
+opentelemetry-instrumentation-action_pack 0.14.0 ruby
+opentelemetry-instrumentation-aws_sdk 0.9.1 ruby
+opentelemetry-instrumentation-faraday 0.29.1 ruby
+opentelemetry-instrumentation-redis 0.27.1 ruby
+resolv-replace 0.1.1 ruby
+raabro 1.4.0 ruby
+concurrent-ruby 1.3.5 ruby
+tzinfo 2.0.6 ruby
+et-orbi 1.4.0 ruby
+fugit 1.12.0 ruby
+rufus-scheduler 3.9.2 ruby
+tzinfo-data 1.2025.2 ruby
+webrick 1.9.1 ruby
+websocket 1.2.11 ruby
+websocket-native 1.0.0 ruby
+rb-fsevent 0.11.2 ruby
+rb-inotify 0.11.1 ruby
+listen 3.9.0 ruby
+openc3 6.9.1 ruby
+resolv 0.6.2 ruby
+timeout 0.4.3 ruby
+io-wait 0.3.1 ruby
+securerandom 0.4.1 ruby
+digest 3.1.1 ruby
+open3 0.2.1 ruby
+cgi 0.4.2 ruby
+date 3.4.1 ruby
+set 1.1.0 ruby
+forwardable 1.3.3 ruby
+uri 1.0.3 ruby
+logger 1.7.0 ruby
+prettyprint 0.2.0 ruby
+pp 0.6.2 ruby
+net-protocol 0.2.2 ruby
+zlib 3.1.1 ruby
+openssl 3.2.0 ruby
+io-nonblock 0.3.0 ruby
+ipaddr 1.2.6 ruby
+find 0.2.0 ruby
+stringio 3.1.7 ruby
+tempfile 0.2.1 ruby
+delegate 0.3.1 ruby
+fileutils 1.7.2 ruby
+tmpdir 0.2.0 ruby
+etc 1.4.3 ruby
+time 0.3.0 ruby
+pathname 0.3.0 ruby
+erb 5.0.2 ruby
+strscan 3.0.9 ruby
+english 0.8.0 ruby
+singleton 0.2.0 ruby
+ostruct 0.6.3 ruby
+drb 2.2.3 ruby
+optparse 0.4.0 ruby
+base64 0.3.0 ruby
+open-uri 0.4.1 ruby
+shellwords 0.2.0 ruby
+fcntl 1.1.0 ruby
+irb 1.15.2 ruby
+reline 0.6.2 ruby
+io-console 0.8.1 ruby
+ruby-termios 1.1.0 ruby
+
+All Threads Backtraces:
+/openc3/bin/openc3cli:577:in `sleep'
+/openc3/bin/openc3cli:577:in `run_bridge'
+/openc3/bin/openc3cli:942:in `<main>'
+
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/top_level.rb:335:in `backtrace'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/top_level.rb:335:in `block (2 levels) in write_exception_file'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/top_level.rb:334:in `each'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/top_level.rb:334:in `block in write_exception_file'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/top_level.rb:275:in `block in create_log_file'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/top_level.rb:273:in `synchronize'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/top_level.rb:273:in `create_log_file'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/top_level.rb:300:in `write_exception_file'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/tools/cmd_tlm_server/interface_thread.rb:229:in `handle_connection_failed'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/tools/cmd_tlm_server/interface_thread.rb:86:in `rescue in block in start'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/tools/cmd_tlm_server/interface_thread.rb:79:in `block in start'
+
+<internal:thread_sync>:18:in `pop'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:231:in `read'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/tools/cmd_tlm_server/interface_thread.rb:97:in `block in start'
+
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:371:in `select'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:371:in `rescue in listen_thread_body'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:368:in `listen_thread_body'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:358:in `block (2 levels) in start_listen_thread'
+<internal:kernel>:187:in `loop'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:357:in `block in start_listen_thread'
+
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:586:in `sleep'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:586:in `wait'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:586:in `block in check_for_dead_clients'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:585:in `synchronize'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:585:in `check_for_dead_clients'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:486:in `rescue in block in write_thread_body'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:482:in `block in write_thread_body'
+<internal:kernel>:187:in `loop'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:479:in `write_thread_body'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:146:in `block (2 levels) in connect'
+<internal:kernel>:187:in `loop'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:145:in `block in connect'
+
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:507:in `sleep'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:507:in `wait'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:507:in `block (2 levels) in write_raw_thread_body'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:506:in `synchronize'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:506:in `rescue in block in write_raw_thread_body'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:501:in `block in write_raw_thread_body'
+<internal:kernel>:187:in `loop'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:498:in `write_raw_thread_body'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:156:in `block (2 levels) in connect'
+<internal:kernel>:187:in `loop'
+/usr/lib/ruby/gems/3.3.0/gems/openc3-6.9.1/lib/openc3/interfaces/tcpip_server_interface.rb:155:in `block in connect'
+
+
+

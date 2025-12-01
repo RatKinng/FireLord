@@ -1,0 +1,7 @@
+# Set VARIABLEs here to allow variation in your plugin
+
+VARIABLE lora_target_name LORA
+
+TARGET LORA <%= lora_target_name %>
+INTERFACE <%= lora_target_name %>_INT openc3/interfaces/tcpip_client_interface.py host.docker.internal 2950 2950 10.0 None BURST
+  MAP_TARGET <%= lora_target_name %>
