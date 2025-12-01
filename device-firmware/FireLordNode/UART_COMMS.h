@@ -2,15 +2,16 @@
 #include <Arduino.h>
 
 // Simple UART helper around any Stream (Serial1 recommended on XIAO SAMD21).
+
 class UART_COMMS {
 public:
-  explicit UART_COMMS(Stream &serial) : io(serial) {}
+  explicit UART_COMMS(Stream &serial, HardwareSerial *hwSerial = nullptr)
+    : io(serial), hw(hwSerial) {}
 
   // For HardwareSerial-like objects that support begin()
   void begin(unsigned long baud) {
-    // If this Stream also has begin(), call it via downcast
-    if (HardwareSerial *hs = dynamic_cast<HardwareSerial*>(&io)) {
-      hs->begin(baud);
+    if (hw) {
+      hw->begin(baud);
     }
   }
 
@@ -108,6 +109,7 @@ public:
 
 private:
   Stream &io;
+  HardwareSerial *hw;
 };
 
 // Convenience helpers for Seeed LoRa-E5 AT commands over UART.
@@ -128,6 +130,10 @@ namespace LoRaE5 {
 
   // Transmit hex payload in P2P test mode
   inline bool p2pTxHex(UART_COMMS &u, const String &hexPayload) {
-    return u.sendAT("AT+TEST=TXLRPKT," + hexPayload);
+    String resp;
+    if (!u.sendATGetResp("AT+TEST=TXLRPKT," + hexPayload, resp, "+TEST: TX DONE", "+TEST: TX FAIL", 3000)) {
+      return false;
+    }
+    return resp.indexOf("+TEST: TX DONE") != -1;
   }
 }
