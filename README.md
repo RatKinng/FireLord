@@ -128,3 +128,16 @@ Document mitigations and revisit them seasonally to keep deployments stable.
 - Mechanical CAD documents enclosure iterations and tolerance tests.
 
 Use these as reference when creating production-ready variants.
+
+---
+
+## System Characteristics
+
+- **Operating profile**: LoRa P2P mesh at 915 MHz (example: SF7, 125 kHz BW, CR 4/5, 10 dBm) with receive-ready nodes and 60 s sampling. Packets are fixed-length (23 bytes payload + CRC32) with flag bits for outliers and a rolling CRC buffer to block duplicates.  
+- **Performance targets**: ≥ 500 m NLOS hops, ≥ 1.2 KB/s link budget (9600 baud), IP55 enclosure, −30 °C for 30 min, and < 200 mm mechanical span. Power: 283 mW RX-ready with heaters on; ≈116 mW average at 5 % heater duty. 600 mAh-equivalent storage yields ~7 h peak or ~17 h average runtime. BOM ≈ $75 per node at 100-unit quantities.  
+- **Radio and payload**: Example initialization uses `AT`, `AT+MODE=TEST`, `AT+TEST=RFCFG,…`, `AT+TEST=RXLRPKT`; `UART_COMMS::p2pTxHex` waits for `+TEST: TX DONE`. Payload layout mirrors `device-firmware/FireLordNode` suggestions (version, device ID, timestamp, temperature, humidity, CO₂, CO, pressure, smoke, VOC, flags, CRC32).  
+- **Electronics**: KiCad carrier hosts a Seeeduino XIAO (I²C, UART, analog), Reyax/Wio-E5 radio, and connectors for SCD40, MPL115A2, MQ-7, smoke, and VOC sensors. Supercapacitor pads include balancing; test pads expose 3.3 V, ground, UART TX/RX, and reset. Footprints favor hand assembly; run ERC/DRC, then generate Gerbers and pick-and-place before fab.  
+- **Firmware behavior**: Samples I²C sensors via `I2C_COMMS`, analog after heater warm-up, validates ranges, packages the frame, records CRC history, and transmits through `UART_COMMS`. Bench mode seeds data when sensors are absent. Power practices include MOSFET-controlled heaters, RTC/low-power sleep, and voltage checks to gate TX.  
+- **Enclosure and assembly**: `device-case` contains Fusion 360, STEP, 3MF, and OpenSCAD sources. Print with PETG/ASA/PC, 0.2 mm layers, ≥ 3 perimeters, 20 % infill; gaskets in TPU or 2 mm silicone. Assembly sequence: seat gasket, mount PCB on M3 standoffs, route solar/antenna through glands with strain relief, close lid diagonally, add vent mesh. Use conformal coating and desiccant; vents should face down. Heat/flame resistance is not provided.  
+- **Deployment and validation**: Maintain overlapping node coverage, mount above vegetation/snow, shield cables, and cache packets indefinitely at the USB LoRa gateway. Validation steps: pre/post I²C scans, `LoRaE5::ping()`, inspect TX/RX/FWD serial logs for delivery, and record hop counts during field trials. Revisit risk mitigations seasonally (supply, isolation, power, sensor drift, base-station uptime).  
+- **Extension paths**: OTA or signed updates, adaptive routing/TX power, cloud/API publishing, additional sensors (soil, weather, perimeter), antenna/housing variants, and SMA with controlled impedance for external antennas.
