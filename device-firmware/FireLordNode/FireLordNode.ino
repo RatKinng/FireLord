@@ -4,6 +4,7 @@
 #include "SamplePacket.h"
 
 constexpr bool LORA_DEBUG      = false;
+constexpr bool BASE_STATION_MODE = false;  // set false for normal sensor/uplink node
 
 // ----- Configuration -------------------------------------------------------
 
@@ -432,6 +433,27 @@ static void pollLoRaReceive() {
     uint16_t smoke = (static_cast<uint16_t>(buf[16]) << 8) | buf[17];
     uint8_t flags = buf[18];
 
+    Serial.print(F("DATA "));
+    Serial.print(nodeId);
+    Serial.print(' ');
+    Serial.print(version);
+    Serial.print(' ');
+    Serial.print(ts);
+    Serial.print(' ');
+    Serial.print(static_cast<int16_t>(tempCx100));
+    Serial.print(' ');
+    Serial.print(humidity);
+    Serial.print(' ');
+    Serial.print(co2);
+    Serial.print(' ');
+    Serial.print(pressure);
+    Serial.print(' ');
+    Serial.print(voc);
+    Serial.print(' ');
+    Serial.print(smoke);
+    Serial.print(' ');
+    Serial.println(flags);
+
     Serial.print(F("[RX] node="));
     Serial.print(nodeId);
     Serial.print(F(", ver="));
@@ -453,10 +475,10 @@ static void pollLoRaReceive() {
     Serial.print(F(", flags=0x"));
     Serial.println(flags, HEX);
 
-    if (nodeId != DEVICE_ID) {
+    if (!BASE_STATION_MODE && nodeId != DEVICE_ID) {
       Serial.print(F("[FWD] payload="));
-    Serial.println(hexPayload);
-    if (!LoRaE5::p2pTxHex(radio, hexPayload)) {
+      Serial.println(hexPayload);
+      if (!LoRaE5::p2pTxHex(radio, hexPayload)) {
         Serial.println(F("[WARN] Forward TX failed"));
       }
     }
@@ -491,6 +513,11 @@ void setup() {
 
 void loop() {
   pollLoRaReceive();
+
+  if (BASE_STATION_MODE) {
+    delay(5);  // small idle delay
+    return;
+  }
 
   static uint32_t lastSendMs = 0;
   const uint32_t now = millis();
