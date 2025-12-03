@@ -1,27 +1,8 @@
-# Plugins Configuration Folder
+# Plugins Volume (FireLord)
 
-Warning: This folder is read/write with the COSMOS system and is meant to be kept configuration controlled
+This directory is bind-mounted into COSMOS so plugin gems and instance metadata persist across container restarts. For FireLord we keep the LoRa plugin preloaded here so a fresh `./openc3.sh run` comes up with the `LORA` target available.
 
-First level folders are scope names, and should be all caps. For COSMOS Core, there is only 1 first level folder / scope: DEFAULT.
+- `DEFAULT/`: default COSMOS scope. Runtime writes here, so expect timestamps or cache files after COSMOS runs.  
+- `DEFAULT/openc3-cosmos-lora/`: packaged `openc3-cosmos-lora` gem and its `plugin_instance.json`, which points to `host.docker.internal:2950` for LoRa traffic.
 
-Inside of each scope folder, are folders that can be arbitrarily named with one folder for each instance of an installed plugin.
-
-The one exception is an optional folder called "targets_modified" that contains any changes made to plugins by the online system.
-This folder can also be used to make local edits to scripts and other configuration that will automatically be picked up by the online system.
-This folder is only supported by the Docker versions of COSMOS and will not function in the Kubernetes versions.
-
-Folder Structure
-
-- plugins
-  - DEFAULT
-    - PluginName1
-      - plugin_name.gem
-      - plugin_instance.json
-    - PluginName2
-      - plugin_name.gem
-      - plugin_instance.json
-    - PluginName3
-    - targets_modified
-      - targetname
-        - procedures
-        - screens
+If you rebuild the plugin, replace the gem in `DEFAULT/openc3-cosmos-lora/` and reload via the COSMOS Admin UI or `./openc3.sh cli load ...` (see `cosmos-firelord/README.md`). Keep `README.upstream.md` for the original OpenC3 guidance.

@@ -19,6 +19,7 @@ FireLord is an open hardware reference for low-cost, peer-to-peer sensor meshes.
 | [`device-firmware/`](device-firmware/README.md) | Arduino-oriented helpers for sensor sampling and LoRa communication. |
 | [`device-case/`](device-case/README.md) | 3D models, print notes, and assembly guidance for the field enclosure. |
 | [`pcb-and-schematics/`](pcb-and-schematics/README.md) | KiCad project for the carrier board and custom footprints. |
+| [`cosmos-firelord/`](cosmos-firelord/README.md) | OpenC3 COSMOS stack with the FireLord LoRa plugin, Docker compose, and bridge config for the USB dongle. |
 
 ---
 
@@ -64,6 +65,15 @@ Use the risk guidance below while planning; the most common issues are supply de
 - **Placement**: Mount above snow or vegetation, shield cables from wildlife, and orient vents downward.  
 - **Backhaul**: Configure the base station to cache indefinitely; cloud transfer is optional.  
 - **Operations**: Schedule inspections ahead of seasonal activities (e.g., controlled burns or tourism peaks).
+
+---
+
+## Ground Operations (COSMOS)
+
+- Use `cosmos-firelord/` to run OpenC3 COSMOS locally and view the `LORA` target. Update `.env` secrets before exposing ports beyond localhost.  
+- Bridge the USB LoRa dongle to COSMOS with the provided profile: `./openc3.sh cli bridge openc3-cosmos-lora/bridge.txt write_port_name=/dev/ttyUSB0 router_port=2950`. The plugin instance expects `host.docker.internal:2950`.  
+- Telemetry matches the FireLord 23-byte packet (version, node ID, uptime seconds, temp x100 C, humidity x100 %, CO2 ppm, pressure x10 hPa, VOC/SMOKE ADC, flags, CRC32). Nodes are TX-only; no COSMOS commands defined.  
+- Container lifecycle: `./openc3.sh run` to start, `./openc3.sh stop` to halt; see `cosmos-firelord/README.md` for rebuild and reload steps.
 
 ---
 

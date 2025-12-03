@@ -1,3 +1,3 @@
-# Script Runner test script
-cmd("LORA EXAMPLE")
-wait_check("LORA STATUS BOOL == 'FALSE'", 5)
+# FireLord nodes are TX-only. Use this script to confirm SAMPLE telemetry is flowing.
+wait_check("LORA SAMPLE VERSION == '1'", 30)
+wait_check("LORA SAMPLE STATUS_FLAGS != '0'", 30)

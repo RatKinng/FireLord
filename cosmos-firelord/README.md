@@ -1,119 +1,61 @@
-# OpenC3 COSMOS Project
+# FireLord COSMOS Stack
 
-This git repo is used as a starting point for running and configuring OpenC3 COSMOS for your specific project.
-It includes the necessary scripts to run OpenC3 COSMOS, but does not come with all the source code and relies on
-running released containers rather than building containers from source. This is the recommended starting
-place for any project who wants to use OpenC3 COSMOS, but not develop the core system.
+This folder packages a ready-to-run OpenC3 COSMOS instance for FireLord field testing. It mounts the FireLord LoRa plugin, exposes the COSMOS web UI locally, and includes a bridge profile for piping radio traffic from a USB dongle into COSMOS tools.
 
-## Quick Start
+## What's Here
 
-1. git clone https://github.com/openc3/cosmos-project.git cosmos-myprojectname
-2. Edit .env and change OPENC3_TAG to the specific version you would like to run (ie. OPENC3_TAG=6.4.1)
-   1. This will allow you to upgrade versions when you choose rather than following latest
-3. Start OpenC3 COSMOS
-   1. On Linux/Mac: ./openc3.sh run
-   2. On Windows: openc3.bat run
-4. After approximately 2 minutes, open a web browser to http://localhost:2900
-   1. If you run "docker ps", you can watch until the openc3-init container completes, at which point the system should be fully configured and ready to use.
+- `compose.yaml` and `.env`: container stack and defaults pinned to OpenC3 6.9.2 in local mode. Update the secrets in `.env` before exposing beyond localhost.
+- `openc3-cosmos-lora/`: plugin source plus the TCP bridge profile (`bridge.txt`) that relays a LoRa serial link into COSMOS.
+- `plugins/DEFAULT/openc3-cosmos-lora/`: the packaged `openc3-cosmos-lora-1.0.0.gem` with an instance preconfigured for target `LORA` on `host.docker.internal:2950`.
+- `openc3.sh` / `openc3.bat`: helper wrapper for running, stopping, and managing COSMOS containers.
 
-## Run without the Demo project
+## Quick Start (Local)
 
-1. Edit .env and remove the OPENC3_DEMO line
-2. If you have already ran with the demo also uninstall the demo plugin from the Admin tool.
+1) Install Docker with Compose and add your user to the Docker group (or run with sudo).  
+2) From the repo root: `cd cosmos-firelord`  
+3) Edit `.env` to rotate all placeholder passwords and adjust ports if 2900/2943 collide locally.  
+4) Start COSMOS:  
+   - macOS/Linux: `./openc3.sh run`  
+   - Windows: `openc3.bat run`  
+   Wait for the `openc3-init` container to finish, then open http://localhost:2900.
 
-## Upgrade to a Specific Version
+## Hook Up the LoRa Dongle
 
-1. Stop OpenC3
-   1. On Linux/Mac: ./openc3.sh stop
-   2. On Windows: openc3.bat stop
-2. Edit .env and change OPENC3_TAG to the specific version you would like to run (ie. OPENC3_TAG=6.4.1)
-3. Start OpenC3
-   1. On Linux/Mac: ./openc3.sh run
-   2. On Windows: openc3.bat run
-
-NOTE: Downgrades are not necessarily supported. When upgrading COSMOS we need to upgrade databases and sometimes migrate internal data structures. While we perform a full regression test on every release, we recommend upgrading an individual machine with your specific plugins and do local testing before rolling out the upgrade to your production system.
-
-## Change all default credentials and secrets
-
-1. Edit .env and change:
-   1. SECRET_KEY_BASE
-   2. OPENC3_SERVICE_PASSWORD
-   3. OPENC3_REDIS_PASSWORD
-   4. OPENC3_BUCKET_PASSWORD
-   5. OPENC3_SR_REDIS_PASSWORD
-   6. OPENC3_SR_BUCKET_PASSWORD
-2. Edit ./openc3-redis/users.acl and change the password for each account. Note passwords for openc3/scriptrunner must match the REDIS passwords in the .env file:
-   1. openc3
-   2. admin
-   3. scriptrunner
-
-Passwords stored in `./openc3-redis/users.acl` use a sha256 hash.
-To generate a new hash use the following method, and then copy / paste into users.acl
+The FireLord plugin expects a TCP feed on port `2950`. Use the included bridge profile to forward a USB serial LoRa dongle into that port:
 
 ```bash
-echo -n 'adminpassword' | openssl dgst -sha256
-SHA2-256(stdin)= 749f09bade8aca755660eeb17792da880218d4fbdc4e25fbec279d7fe9f65d70
+cd cosmos-firelord
+./openc3.sh cli bridge openc3-cosmos-lora/bridge.txt \
+  write_port_name=/dev/ttyUSB0 \
+  read_port_name=/dev/ttyUSB0 \
+  router_port=2950
 ```
 
-## Opening to the Network
+- COSMOS “attempting to connect” here is only the TCP socket to this bridge, not RF link state. If you see it, the bridge is not reachable.
+- Free the port first. `compose.yaml` currently maps `openc3-minio` to `127.0.0.1:2950`, which blocks the bridge. Comment that mapping or pick another port and update `plugin.txt`, `plugin_instance.json`, and `bridge.txt` to match.
+- Run the bridge where the USB device is available. The helper command runs inside a container; on Windows/WSL it is often easier to run a host-side serial→TCP forwarder on the chosen port instead.
 
-Important: Before exposing OpenC3 COSMOS to any network, even a local network, make sure you have changed all default credentials and secrets!!!
+- Change `/dev/ttyUSB0` to the COM/tty device for your dongle.  
+- Adjust `router_listen_address` if COSMOS is running on another host.  
+- The plugin instance in `plugins/DEFAULT` points to `host.docker.internal:2950`, so the bridge must run on the same machine as Docker.
 
-### Open to the network using https/SSL and your own certificates
+## Using the FireLord LORA Target
 
-1. Copy your public SSL certicate to ./openc3-traefik/cert.crt
-2. Copy your private SSL certicate to ./openc3-traefik/cert.key
-3. Edit compose.yaml
-   1. Comment out this openc3-traefik line: `- "./openc3-traefik/traefik.yaml:/etc/traefik/traefik.yaml:z"`
-   2. Uncomment this openc3-traefik line: `- "./openc3-traefik/traefik-ssl.yaml:/etc/traefik/traefik.yaml"`
-   3. Uncomment this openc3-traefik line: `- "./openc3-traefik/cert.key:/etc/traefik/cert.key"`
-   4. Uncomment this openc3-traefik line: `- "./openc3-traefik/cert.crt:/etc/traefik/cert.crt"`
-4. If you are able to run as the standard browser ports 80/443, edit compose.yaml:
-   1. Comment out this openc3-traefik line: `- "127.0.0.1:2900:2900"`
-   2. Comment out this openc3-traefik line: `- "127.0.0.1:2943:2943"`
-   3. Uncomment out this openc3-traefik line: `- "80:2900"`
-   4. Uncomment out this openc3-traefik line: `- "443:2943"`
-5. If not, edit compose.yaml:
-   1. Remove 127.0.0.1 from this line: `- "127.0.0.1:2900:2900"`
-   2. Remove 127.0.0.1 from this line: `- "127.0.0.1:2943:2943"`
-6. Edit ./openc3-traefik/traefik-ssl.yaml
-   1. Update line 14 to the first port number in step 4 or 5: to: ":2943" # This should match port forwarding in your compose.yaml
-   2. Update line 22 to your domain: - main: "mydomain.com" # Update with your domain
-7. Start OpenC3
-   1. On Linux/Mac: ./openc3.sh run
-   2. On Windows: openc3.bat run
-8. After approximately 2 minutes, open a web browser to `https://<Your IP Address>` (or `https://<Your IP Address>:2943` if you can't use standard ports)
-   1. If you run "docker ps", you can watch until the openc3-init container completes, at which point the system should be fully configured and ready to use.
+- Target name: `LORA` (configurable via `plugins/DEFAULT/openc3-cosmos-lora/plugin_instance.json`).  
+- Interface: TCP client to the local bridge (port 2950).  
+- Telemetry reflects the 23-byte FireLord sample payload (version, node ID, uptime seconds, temperature x100 C, humidity x100 %, CO2 ppm, pressure x10 hPa, VOC/SMOKE ADC counts, status flags, CRC32). Nodes are TX-only; no commands are defined yet.  
+- Screens/procedures live under `openc3-cosmos-lora/targets/LORA/` and will appear in COSMOS once the plugin is loaded.
 
-### Open to the network using a global certificate from Let's Encrypt
+## Updating the Plugin
 
-Warning: These directions only work when exposing OpenC3 to the internet. Make sure you understand the risks and have properly configured your server settings and firewall.
+1) Edit the plugin source under `openc3-cosmos-lora/` (e.g., add real telemetry items).  
+2) Build a new gem: `./openc3.sh cli rake build VERSION=1.0.1` from inside `openc3-cosmos-lora/`.  
+3) Replace the gem in `plugins/DEFAULT/openc3-cosmos-lora/` and update `plugin_instance.json` if the filename changes.  
+4) Reload the plugin in COSMOS (Admin → Plugins) or via CLI:  
+   `./openc3.sh cli load plugins/DEFAULT/openc3-cosmos-lora/openc3-cosmos-lora-1.0.1.gem DEFAULT plugins/DEFAULT/openc3-cosmos-lora/plugin_instance.json force`.
 
-1. Make sure that your DNS settings are mapping your domain name to your server
-2. Edit compose.yaml
-   1. Comment out this openc3-traefik line: `- "./openc3-traefik/traefik.yaml:/etc/traefik/traefik.yaml:z"`
-   2. Uncomment this openc3-traefik line: `- "./openc3-traefik/traefik-letsencrypt.yaml:/etc/traefik/traefik.yaml"`
-3. Edit compose.yaml:
-   1. Comment out this openc3-traefik line: `- "127.0.0.1:2900:2900"`
-   2. Comment out this openc3-traefik line: `- "127.0.0.1:2943:2943"`
-   3. Uncomment out this openc3-traefik line: `- "80:2900"`
-   4. Uncomment out this openc3-traefik line: `- "443:2943"`
-4. Start OpenC3
-   1. On Linux/Mac: ./openc3.sh run
-   2. On Windows: openc3.bat run
-5. After approximately a few minutes, open a web browser to `https://<Your Domain Name>`
-   1. If you run "docker ps", you can watch until the openc3-init container completes, at which point the system should be fully configured and ready to use.
+## Notes
 
-### Open to the network insecurely using http
-
-Warning: This is not recommended except for temporary testing on a local network. This will send plain text passwords over the network!
-
-1. Edit compose.yaml
-   1. Comment out this openc3-traefik line: `- "./openc3-traefik/traefik.yaml:/etc/traefik/traefik.yaml:z"`
-   2. Uncomment this openc3-traefik line: `- "./openc3-traefik/traefik-allow-http.yaml:/etc/traefik/traefik.yaml"`
-   3. Remove 127.0.0.1 from this line: `- "127.0.0.1:2900:2900"`
-2. Start OpenC3
-   1. On Linux/Mac: ./openc3.sh run
-   2. On Windows: openc3.bat run
-3. After approximately 2 minutes, open a web browser to `https://<Your IP Address>:2900`
-   1. If you run "docker ps", you can watch until the openc3-cosmos-init container completes, at which point the system should be fully configured and ready to use.
+- Keep the `.env` credentials private; they are mounted directly into containers.  
+- The `plugins/DEFAULT` directory is bind-mounted and will be modified at runtime; commit only intentional changes.  
+- For networks beyond localhost, enable TLS by swapping `openc3-traefik/traefik.yaml` for one of the SSL variants and providing certificates.

@@ -1,66 +1,39 @@
-# OpenC3 COSMOS Plugin
+# FireLord LoRa COSMOS Plugin
 
-See the [OpenC3](https://openc3.com) documentation for all things OpenC3.
+This plugin packages the FireLord LoRa target for OpenC3 COSMOS. It ships with a TCP client interface that expects a host-side bridge from the USB LoRa dongle and includes stub command/telemetry definitions you can replace with the real packet map.
 
-Update this comment with your own description.
+## Structure
 
-## Getting Started
+- `plugin.txt`: declares target `LORA` and a TCP client pointed at `host.docker.internal:2950`. The value for `lora_target_name` is templated so it can be overridden when loading the plugin.  
+- `bridge.txt`: host-side serial↔TCP bridge. Run it on the same machine as Docker so the container can reach `host.docker.internal:2950`.  
+- `targets/LORA/`: placeholder COSMOS target (cmd/tlm, screens, procedures, and a helper `lib/lora.py`). Swap these with real items to visualize FireLord traffic.
+- `openc3-cosmos-lora-1.0.0.gem`: prebuilt gem consumed by `plugins/DEFAULT/openc3-cosmos-lora/plugin_instance.json`.
 
-1. Edit the .gemspec file fields: name, summary, description, authors, email, and homepage
-1. Update the LICENSE.txt file with your company name
+## Running the Bridge
 
-## Building non-tool / widget plugins
+From the `cosmos-firelord` directory:
 
-1. <Path to COSMOS installation>/openc3.sh cli rake build VERSION=X.Y.Z (or openc3.bat for Windows)
-   - VERSION is required
-   - gem file will be built locally
-
-## Building tool / widget plugins using a local Ruby/Node/pnpm/Rake Environment
-
-1. pnpm install --frozen-lockfile --ignore-scripts
-1. rake build VERSION=1.0.0
-
-## Building tool / widget plugins using Docker and the openc3-node container
-
-If you don’t have a local node environment, you can use our openc3-node container to build custom tools and custom widgets
-
-Mac / Linux:
-
-```
-docker run -it -v `pwd`:/openc3/local:z -w /openc3/local docker.io/openc3inc/openc3-node sh
+```bash
+./openc3.sh cli bridge openc3-cosmos-lora/bridge.txt \
+  write_port_name=/dev/ttyUSB0 \
+  read_port_name=/dev/ttyUSB0 \
+  router_port=2950
 ```
 
-Windows:
+- COSMOS “attempting to connect” is only the TCP socket to this bridge, not RF link state. If you see that message, the bridge is unreachable.
+- Ensure the port is free. In this stack `compose.yaml` maps `openc3-minio` to `127.0.0.1:2950`; comment that mapping or pick a new port and update `plugin.txt`, `plugin_instance.json`, and `bridge.txt` together.
+- Run the bridge where the USB device is accessible. The helper command runs in a container; on Windows/WSL you may need a host-side serial→TCP forwarder listening on the chosen port instead.
 
-```
-docker run -it -v %cd%:/openc3/local -w /openc3/local docker.io/openc3inc/openc3-node sh
-```
+- Match the `router_port` to `plugin.txt` (2950 by default).  
+- Update `write_port_name`/`read_port_name` for your COM/tty device and parity/flow control if needed.  
+- Set `router_listen_address=0.0.0.0` only when COSMOS runs on another host and you trust the network.
 
-1. pnpm install --frozen-lockfile --ignore-scripts
-1. rake build VERSION=1.0.0
+## Editing and Rebuilding
 
-## Installing into OpenC3 COSMOS
+1) Update the target definitions under `targets/LORA/` and any supporting utilities.  
+2) Bump the gem version and rebuild from this folder:  
+   `./openc3.sh cli rake build VERSION=1.0.1`  
+3) Copy the new gem into `plugins/DEFAULT/openc3-cosmos-lora/` and update `plugin_instance.json` so COSMOS loads the new filename.  
+4) Reload the plugin through the COSMOS Admin > Plugins page or `./openc3.sh cli load ...` (see `cosmos-firelord/README.md`).
 
-1. Go to the OpenC3 Admin Tool, Plugins Tab
-1. Click the install button and choose your plugin.gem file
-1. Fill out plugin parameters
-1. Click Install
-
-## Contributing
-
-We encourage you to contribute to OpenC3!
-
-Contributing is easy.
-
-1. Fork the project
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
-Before any contributions can be incorporated we do require all contributors to agree to a Contributor License Agreement
-
-This protects both you and us and you retain full rights to any code you write.
-
-## License
-
-This OpenC3 plugin is released under the MIT License. See [LICENSE.txt](LICENSE.txt)
+General, upstream plugin boilerplate now lives in `README.upstream.md` for reference.

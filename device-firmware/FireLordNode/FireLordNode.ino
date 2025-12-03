@@ -10,6 +10,7 @@ constexpr bool LORA_DEBUG      = false;
 constexpr uint8_t DEVICE_ID            = 1;
 constexpr uint32_t SAMPLE_INTERVAL_MS  = 30000;   // 30 seconds between uplinks
 constexpr uint32_t LORA_FREQUENCY_HZ   = 915000000UL;
+//constexpr uint32_t LORA_FREQUENCY_HZ = 915125000UL;
 constexpr int      LORA_SPREADING_FACT = 7;
 constexpr int      LORA_BW_KHZ         = 125;
 constexpr int      LORA_PREAMBLE_LEN   = 12;

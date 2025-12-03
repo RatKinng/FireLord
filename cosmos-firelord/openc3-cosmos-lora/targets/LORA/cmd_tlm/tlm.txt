@@ -1,8 +1,12 @@
-TELEMETRY LORA STATUS BIG_ENDIAN "Telemetry description"
-  # Keyword      Name  BitSize Type   ID Description
-  APPEND_ID_ITEM ID    16      INT    1  "Identifier"
-  APPEND_ITEM    VALUE 32      FLOAT     "Value"
-  APPEND_ITEM    BOOL  8       UINT      "Boolean"
-    STATE FALSE 0
-    STATE TRUE 1
-  APPEND_ITEM    LABEL 0       STRING    "The label to apply"
+TELEMETRY LORA SAMPLE BIG_ENDIAN "FireLord node sample (23 bytes payload + CRC32)"
+  APPEND_ITEM VERSION            8  UINT  "Payload version"
+  APPEND_ITEM NODE_ID            8  UINT  "Node identifier"
+  APPEND_ITEM TIMESTAMP_S        32 UINT  "Seconds since boot"
+  APPEND_ITEM TEMPERATURE_CX100  16 INT   "Temperature x100 (C)"
+  APPEND_ITEM HUMIDITY_X100      16 UINT  "Relative humidity x100 (%)"
+  APPEND_ITEM CO2_PPM            16 UINT  "CO2 concentration (ppm)"
+  APPEND_ITEM PRESSURE_DECI_HPA  16 UINT  "Pressure x10 (hPa)"
+  APPEND_ITEM VOC_RAW            16 UINT  "VOC ADC count (0-4095)"
+  APPEND_ITEM SMOKE_RAW          16 UINT  "Smoke/particulate ADC count (0-4095)"
+  APPEND_ITEM STATUS_FLAGS       8  UINT  "Bit0: ambient sensors OK, Bit1: pressure OK, Bit2: analog saturation"
+  APPEND_ITEM CRC32              32 UINT  "CRC32 over bytes 0-18"

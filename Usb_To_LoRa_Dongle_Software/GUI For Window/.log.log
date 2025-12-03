@@ -48,3 +48,109 @@ ERROR:LORA :Couldn't connect with COM10.
 INFO:LORA :Connected with COM7 at 9600 baudrate.
 INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
 INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Connected with COM20 at 9600 baudrate.
+INFO:LORA :Serial Write: b'Stink\n'
+INFO:LORA :Serial Write: b'Stink\n'
+INFO:LORA :Serial Write: b'Stink\n'
+INFO:LORA :Serial Write: b'Stink\n'
+INFO:LORA :Serial Write: b'Stink\n'
+INFO:LORA :Connected with COM20 at 9600 baudrate.
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00c\x03A\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00c\x03A\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00c\x03A\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00c\x03A\x03\x00\x00')
+INFO:LORA :Serial Write: b'TheMy\n'
+INFO:LORA :Serial Write: b'TheMy\n'
+INFO:LORA :Serial Write: b'TheMy\n'
+INFO:LORA :Serial Write: b'TheMy\n'
+INFO:LORA :Serial Write: b'TheMy\n'
+INFO:LORA :Serial Write: b'TheMy\n'
+ERROR:LORA :Serial Exception: GetOverlappedResult failed (PermissionError(13, 'Access is denied.', None, 5)).
+ERROR:LORA :Couldn't connect with COM20.
+INFO:LORA :Connected with COM20 at 9600 baudrate.
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x05\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x05\x03\x00\x00')
+INFO:LORA :Connected with COM20 at 9600 baudrate.
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x00\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x05\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x05\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x05\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x05\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x05\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x05\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x05\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x05\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x05\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x05\x03\x00\x00')
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00b\x00\x05\x03\x00\x00')
+INFO:LORA :Serial Port Disconnected
+ERROR:LORA :Couldn't connect with COM10.
+INFO:LORA :Connected with COM20 at 9600 baudrate.
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Connected with COM20 at 9600 baudrate.
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00c\x00\x05\x03\x00\x00')
+INFO:LORA :Serial Response: b'\xc1\x00\t\x00\x00\x00c\x00\x05\x03\x00\x00'
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00c\x00\x05\x03\x00\x00')
+INFO:LORA :Serial Response: b'\xc1\x00\t\x00\x00\x00c\x00\x05\x03\x00\x00'
+INFO:LORA :Connected with COM20 at 9600 baudrate.
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Response: b'\xc1\x00\t\x00\x00\x00c\x00\x05\x03\x00\x00'
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00c\x00A\x03\x00\x00')
+INFO:LORA :Serial Response: b'\xc1\x00\t\x00\x00\x00c\x00A\x03\x00\x00'
+INFO:LORA :Serial Write: bytearray(b'\xc0\x00\t\x00\x00\x00c\x00A\x03\x00\x00')
+INFO:LORA :Serial Response: b'\xc1\x00\t\x00\x00\x00c\x00A\x03\x00\x00'
+INFO:LORA :Connected with COM20 at 9600 baudrate.
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Response: b'\xc1\x00\t\x00\x00\x00c\x00A\x03\x00\x00'
+INFO:LORA :Serial Write: b'Fard\n'
+INFO:LORA :Serial Response: b'\xff\xff\xff'
+INFO:LORA :Serial Write: b'Fard\n'
+INFO:LORA :Serial Response: b'\xff\xff\xff'
+INFO:LORA :Serial Write: b'Fard\n'
+INFO:LORA :Serial Write: b'Fard\n'
+INFO:LORA :Serial Response: b'\xff\xff\xff'
+INFO:LORA :Serial Response: b'\xff\xff\xff'
+ERROR:LORA :Serial Exception: GetOverlappedResult failed (PermissionError(13, 'Access is denied.', None, 5)).
+INFO:LORA :Connected with COM20 at 9600 baudrate.
+INFO:LORA :Serial Write: b'Fard\n'
+INFO:LORA :Connected with COM9 at 9600 baudrate.
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+ERROR:LORA :Serial Exception: GetOverlappedResult failed (PermissionError(13, 'Access is denied.', None, 5)).
+INFO:LORA :Serial Port Disconnected
+INFO:LORA :Connected with COM9 at 9600 baudrate.
+INFO:LORA :Serial Write: bytearray(b'\xc1\x00\t')
+INFO:LORA :Serial Response: b'\xc1\x00\t\x00\x00\x00c\x00A\x03\x00\x00'
+ERROR:LORA :Serial Exception: GetOverlappedResult failed (PermissionError(13, 'Access is denied.', None, 5)).
+INFO:LORA :Serial Port Disconnected
