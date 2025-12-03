@@ -1,1 +1,0 @@
-# FireLord nodes are transmit-only over LoRa; no COSMOS commands are defined yet.
