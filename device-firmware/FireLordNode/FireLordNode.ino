@@ -497,10 +497,12 @@ void setup() {
     ; // wait for host
   }
 
-  pinMode(VOC_PIN, INPUT);
-  pinMode(SMOKE_PIN, INPUT);
-  I2C::begin();
-  sensorsBegin();
+  if (!BASE_STATION_MODE) {
+    pinMode(VOC_PIN, INPUT);
+    pinMode(SMOKE_PIN, INPUT);
+    I2C::begin();
+    sensorsBegin();
+  }
 
   Serial1.begin(9600);
   loraReady = configureLoRa();
