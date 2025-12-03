@@ -1,6 +1,6 @@
 # FireLord COSMOS Stack
 
-This folder packages a ready-to-run OpenC3 COSMOS instance for FireLord field testing. It mounts the FireLord LoRa plugin, exposes the COSMOS web UI locally, and includes a bridge profile for piping radio traffic from a USB dongle into COSMOS tools.
+This folder packages a ready-to-run OpenC3 COSMOS instance for FireLord field testing. It mounts the FireLord LoRa plugin, exposes the COSMOS web UI locally, and includes a bridge profile for piping radio traffic from a base-station FireLord node (USB serial) into COSMOS tools.
 
 ## What's Here
 
@@ -19,15 +19,16 @@ This folder packages a ready-to-run OpenC3 COSMOS instance for FireLord field te
    - Windows: `openc3.bat run`  
    Wait for the `openc3-init` container to finish, then open http://localhost:2900.
 
-## Hook Up the LoRa Dongle
+## Hook Up the Base-Station Node
 
-The FireLord plugin expects a TCP feed on port `2950`. Use the included bridge profile to forward a USB serial LoRa dongle into that port:
+The FireLord plugin expects a TCP feed on port `2950`. Use the included bridge profile to forward a FireLord device running `BASE_STATION_MODE=true` (receive-only, sensorless) into that port:
 
 ```bash
 cd cosmos-firelord
 ./openc3.sh cli bridge openc3-cosmos-lora/bridge.txt \
-  write_port_name=/dev/ttyUSB0 \
-  read_port_name=/dev/ttyUSB0 \
+  write_port_name=/dev/ttyACM0 \
+  read_port_name=/dev/ttyACM0 \
+  baud_rate=115200 \
   router_port=2950
 ```
 
@@ -35,7 +36,7 @@ cd cosmos-firelord
 - Free the port first. `compose.yaml` currently maps `openc3-minio` to `127.0.0.1:2950`, which blocks the bridge. Comment that mapping or pick another port and update `plugin.txt`, `plugin_instance.json`, and `bridge.txt` to match.
 - Run the bridge where the USB device is available. The helper command runs inside a container; on Windows/WSL it is often easier to run a host-side serial→TCP forwarder on the chosen port instead.
 
-- Change `/dev/ttyUSB0` to the COM/tty device for your dongle.  
+- Change `/dev/ttyACM0` to the COM/tty device for your base-station node.  
 - Adjust `router_listen_address` if COSMOS is running on another host.  
 - The plugin instance in `plugins/DEFAULT` points to `host.docker.internal:2950`, so the bridge must run on the same machine as Docker.
 
@@ -43,7 +44,7 @@ cd cosmos-firelord
 
 - Target name: `LORA` (configurable via `plugins/DEFAULT/openc3-cosmos-lora/plugin_instance.json`).  
 - Interface: TCP client to the local bridge (port 2950).  
-- Telemetry reflects the 23-byte FireLord sample payload (version, node ID, uptime seconds, temperature x100 C, humidity x100 %, CO2 ppm, pressure x10 hPa, VOC/SMOKE ADC counts, status flags, CRC32). Nodes are TX-only; no commands are defined yet.  
+- Telemetry reflects the 23-byte FireLord sample payload (version, node ID, uptime seconds, temperature x100 C, humidity x100 %, CO2 ppm, pressure x10 hPa, VOC/SMOKE ADC counts, status flags, CRC32). The base-station firmware emits a `DATA …` line for every validated packet that can be parsed downstream; nodes are TX-only, so no commands are defined yet.  
 - Screens/procedures live under `openc3-cosmos-lora/targets/LORA/` and will appear in COSMOS once the plugin is loaded.
 
 ## Updating the Plugin

@@ -50,6 +50,16 @@ Keep a short hash history to reject duplicate packets and duty-cycle heater load
 
 ---
 
+## Base Station Mode
+
+- Set `BASE_STATION_MODE` to `true` in `FireLordNode.ino` to run the firmware as a USB-powered receive-only gateway with no sensors attached.  
+- Sensor pin setup and I²C bring-up are skipped; the radio is still configured with `AT+MODE=TEST`, `AT+TEST=RFCFG,…`, and `AT+TEST=RXLRPKT`.  
+- Every validated packet prints a stable machine-readable line:  
+  `DATA <nodeId> <ver> <ts> <tempCx100> <humidity> <co2> <pressure> <voc> <smoke> <flags>`  
+- No LoRa transmissions occur in this mode (uplinks and forwarding are bypassed). Use it for COSMOS ingest or host-side logging.
+
+---
+
 ## LoRa Configuration
 
 ```cpp
@@ -98,7 +108,7 @@ Reference power budget: ~283 mW receive-ready with heaters on; ~116 mW with 
 ## Testing and Maintenance
 
 - Bench test with sensors unplugged; the sketch falls back to seeded data and sets status flags when live sensors are missing.  
-- Watch serial logs: `[TX] payload=…` marks transmissions, `[RX] …` shows decoded inbound packets, and `[FWD] …` indicates a relayed frame.  
+- Watch serial logs: `[TX] payload=…` marks transmissions, `[RX] …` shows decoded inbound packets, `[FWD] …` indicates a relayed frame, and `DATA …` is emitted for every validated packet (even in base-station mode).  
 - Tag firmware releases that go to the field and keep binaries for rollback.  
 - The built-in LED flashes after each successful transmit; no blink means the LoRa handshake failed.
 

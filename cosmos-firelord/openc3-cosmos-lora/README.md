@@ -1,6 +1,6 @@
 # FireLord LoRa COSMOS Plugin
 
-This plugin packages the FireLord LoRa target for OpenC3 COSMOS. It ships with a TCP client interface that expects a host-side bridge from the USB LoRa dongle and includes stub command/telemetry definitions you can replace with the real packet map.
+This plugin packages the FireLord LoRa target for OpenC3 COSMOS. It ships with a TCP client interface that expects a host-side bridge from a FireLord base-station node (USB serial) and includes stub command/telemetry definitions you can replace with the real packet map.
 
 ## Structure
 
@@ -15,17 +15,18 @@ From the `cosmos-firelord` directory:
 
 ```bash
 ./openc3.sh cli bridge openc3-cosmos-lora/bridge.txt \
-  write_port_name=/dev/ttyUSB0 \
-  read_port_name=/dev/ttyUSB0 \
+  write_port_name=/dev/ttyACM0 \
+  read_port_name=/dev/ttyACM0 \
+  baud_rate=115200 \
   router_port=2950
 ```
 
 - COSMOS “attempting to connect” is only the TCP socket to this bridge, not RF link state. If you see that message, the bridge is unreachable.
 - Ensure the port is free. In this stack `compose.yaml` maps `openc3-minio` to `127.0.0.1:2950`; comment that mapping or pick a new port and update `plugin.txt`, `plugin_instance.json`, and `bridge.txt` together.
-- Run the bridge where the USB device is accessible. The helper command runs in a container; on Windows/WSL you may need a host-side serial→TCP forwarder listening on the chosen port instead.
+- Run the bridge where the base-station device (FireLord node with `BASE_STATION_MODE=true`) is accessible over USB serial. The helper command runs in a container; on Windows/WSL you may need a host-side serial→TCP forwarder listening on the chosen port instead.
 
 - Match the `router_port` to `plugin.txt` (2950 by default).  
-- Update `write_port_name`/`read_port_name` for your COM/tty device and parity/flow control if needed.  
+- Update `write_port_name`/`read_port_name` for your COM/tty device and parity/flow control if needed; the base-station firmware uses 115200 baud.  
 - Set `router_listen_address=0.0.0.0` only when COSMOS runs on another host and you trust the network.
 
 ## Editing and Rebuilding

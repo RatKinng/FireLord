@@ -19,14 +19,14 @@ FireLord is an open hardware reference for low-cost, peer-to-peer sensor meshes.
 | [`device-firmware/`](device-firmware/README.md) | Arduino-oriented helpers for sensor sampling and LoRa communication. |
 | [`device-case/`](device-case/README.md) | 3D models, print notes, and assembly guidance for the field enclosure. |
 | [`pcb-and-schematics/`](pcb-and-schematics/README.md) | KiCad project for the carrier board and custom footprints. |
-| [`cosmos-firelord/`](cosmos-firelord/README.md) | OpenC3 COSMOS stack with the FireLord LoRa plugin, Docker compose, and bridge config for the USB dongle. |
+| [`cosmos-firelord/`](cosmos-firelord/README.md) | OpenC3 COSMOS stack with the FireLord LoRa plugin, Docker compose, and bridge config for a base-station FireLord node over USB serial. |
 
 ---
 
 ## System Overview
 
 1. **Field nodes** collect local sensor data, flag anomalies, and rebroadcast peer packets.  
-2. **Base stations** log every packet via a USB LoRa interface and forward data when backhaul is available.  
+2. **Base stations** are FireLord nodes flashed in base-station mode (no sensors, receive-only) that log every packet over USB serial and forward data when backhaul is available.  
 3. **Optional cloud services** expose data to stakeholders or downstream tooling.
 
 The mesh design keeps infrastructure light: any node can relay data, and a single active base station is sufficient.
@@ -71,8 +71,8 @@ Use the risk guidance below while planning; the most common issues are supply de
 ## Ground Operations (COSMOS)
 
 - Use `cosmos-firelord/` to run OpenC3 COSMOS locally and view the `LORA` target. Update `.env` secrets before exposing ports beyond localhost.  
-- Bridge the USB LoRa dongle to COSMOS with the provided profile: `./openc3.sh cli bridge openc3-cosmos-lora/bridge.txt write_port_name=/dev/ttyUSB0 router_port=2950`. The plugin instance expects `host.docker.internal:2950`.  
-- Telemetry matches the FireLord 23-byte packet (version, node ID, uptime seconds, temp x100 C, humidity x100 %, CO2 ppm, pressure x10 hPa, VOC/SMOKE ADC, flags, CRC32). Nodes are TX-only; no COSMOS commands defined.  
+- Bridge a base-station FireLord node (USB serial) to COSMOS with the provided profile: `./openc3.sh cli bridge openc3-cosmos-lora/bridge.txt write_port_name=/dev/ttyACM0 baud_rate=115200 router_port=2950`. The plugin instance expects `host.docker.internal:2950`.  
+- Base-station firmware emits `DATA <nodeId> <ver> <ts> <tempCx100> <humidity> <co2> <pressure> <voc> <smoke> <flags>` on every validated packet; COSMOS tooling can key off that stable line alongside the `[RX]` log. Nodes are TX-only; no COSMOS commands defined.  
 - Container lifecycle: `./openc3.sh run` to start, `./openc3.sh stop` to halt; see `cosmos-firelord/README.md` for rebuild and reload steps.
 
 ---
@@ -89,7 +89,7 @@ Use the risk guidance below while planning; the most common issues are supply de
 | [Smoke sensor (DFRobot SEN0570)](https://www.digikey.com/en/products/detail/dfrobot/SEN0570/24611153) | Analog particle indicator | Module w/2.54 mm header | 4.90 | Mount behind vent mesh. |
 | [VOC sensor (DFRobot SEN0566)](https://www.digikey.com/en/products/detail/dfrobot/SEN0566/24611145) | Analog VOC indicator | Module w/2.54 mm header | 4.90 | Co-locate with smoke sensor. |
 | [Supercapacitor (Tecate TPLH-2R7-800)](https://www.digikey.com/en/products/detail/tecate-group/TPLH-2R7-800PS35X71/21378858) | 2.7 V 800 F storage | Radial through-hole | 17.50 (each) | Use two in series with balancing. |
-| [USB LoRa gateway (LoStik-class)](https://www.digikey.com/en/products/detail/sb-components-ltd/SKU26586/18723792) | USB-to-LoRa bridge | External | 46.19 | Serves as base-station interface. |
+| [Base-station node (FireLord in BASE_STATION_MODE)](https://www.digikey.com/en/products/detail/seeed-technology-co-ltd/102010328/11506471) | USB-powered receive-only gateway | Onboard | 5.40 + radio | Same hardware as field nodes; flash with `BASE_STATION_MODE=true` and omit sensors. |
 | [Solar panel (Seeed 1 W)](https://www.mouser.com/ProductDetail/Seeed-Studio/313070001) | 5 V nominal, 1 W | Leaded | 11.95 | Size array for local insolation. |
 | [Connectors, cabling, misc.](https://www.amazon.com/100Pcs-Connector-Include-Female-Ph2-0mm/dp/B0DMW21LWS) | JST harnesses, fasteners | Through-hole / pre-crimped | ~10.00 | Include spare gaskets and glands. |
 
@@ -149,5 +149,5 @@ Use these as reference when creating production-ready variants.
 - **Electronics**: KiCad carrier hosts a Seeeduino XIAO (I²C, UART, analog), Reyax/Wio-E5 radio, and connectors for SCD40, MPL115A2, MQ-7, smoke, and VOC sensors. Supercapacitor pads include balancing; test pads expose 3.3 V, ground, UART TX/RX, and reset. Footprints favor hand assembly; run ERC/DRC, then generate Gerbers and pick-and-place before fab.  
 - **Firmware behavior**: Samples I²C sensors via `I2C_COMMS`, analog after heater warm-up, validates ranges, packages the frame, records CRC history, and transmits through `UART_COMMS`. Bench mode seeds data when sensors are absent. Power practices include MOSFET-controlled heaters, RTC/low-power sleep, and voltage checks to gate TX.  
 - **Enclosure and assembly**: `device-case` contains Fusion 360, STEP, 3MF, and OpenSCAD sources. Print with PETG/ASA/PC, 0.2 mm layers, ≥ 3 perimeters, 20 % infill; gaskets in TPU or 2 mm silicone. Assembly sequence: seat gasket, mount PCB on M3 standoffs, route solar/antenna through glands with strain relief, close lid diagonally, add vent mesh. Use conformal coating and desiccant; vents should face down. Heat/flame resistance is not provided.  
-- **Deployment and validation**: Maintain overlapping node coverage, mount above vegetation/snow, shield cables, and cache packets indefinitely at the USB LoRa gateway. Validation steps: pre/post I²C scans, `LoRaE5::ping()`, inspect TX/RX/FWD serial logs for delivery, and record hop counts during field trials. Revisit risk mitigations seasonally (supply, isolation, power, sensor drift, base-station uptime).  
+- **Deployment and validation**: Maintain overlapping node coverage, mount above vegetation/snow, shield cables, and cache packets indefinitely at the base-station node on USB serial. Validation steps: pre/post I²C scans, `LoRaE5::ping()`, inspect TX/RX/FWD serial logs (including `DATA …`) for delivery, and record hop counts during field trials. Revisit risk mitigations seasonally (supply, isolation, power, sensor drift, base-station uptime).  
 - **Extension paths**: OTA or signed updates, adaptive routing/TX power, cloud/API publishing, additional sensors (soil, weather, perimeter), antenna/housing variants, and SMA with controlled impedance for external antennas.
