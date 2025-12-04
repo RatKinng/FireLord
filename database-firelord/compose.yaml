@@ -1,15 +1,14 @@
 services:
-  firelord-logger:
-    build: .
-    container_name: firelord-logger
+  firelord-db:
+    image: postgres:16-alpine
+    container_name: firelord-db
     environment:
-      SERIAL_PORT: ${SERIAL_PORT:-/dev/ttyACM0}
-      BAUD_RATE: ${BAUD_RATE:-115200}
-      DB_PATH: /data/firelord.db
-      LOG_LEVEL: ${LOG_LEVEL:-INFO}
-      RECONNECT_DELAY_SECONDS: ${RECONNECT_DELAY_SECONDS:-3}
-    devices:
-      - "${SERIAL_PORT:-/dev/ttyACM0}:${SERIAL_PORT:-/dev/ttyACM0}"
+      POSTGRES_DB: ${DB_NAME:-firelord}
+      POSTGRES_USER: ${DB_USER:-firelord}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-firelord}
+      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - ./data:/data
+      - ./data/db:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
     restart: unless-stopped

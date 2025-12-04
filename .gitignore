@@ -1,0 +1,14 @@
+# Python / virtual env
+.venv/
+__pycache__/
+*.pyc
+
+# Local env/config
+.env
+
+# OS noise
+.DS_Store
+
+# Database-firelord data volume
+database-firelord/data/db/
+database-firelord/data/*.db

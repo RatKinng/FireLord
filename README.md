@@ -19,7 +19,7 @@ FireLord is an open hardware reference for low-cost, peer-to-peer sensor meshes.
 | [`device-firmware/`](device-firmware/README.md) | Arduino-oriented helpers for sensor sampling and LoRa communication. |
 | [`device-case/`](device-case/README.md) | 3D models, print notes, and assembly guidance for the field enclosure. |
 | [`pcb-and-schematics/`](pcb-and-schematics/README.md) | KiCad project for the carrier board and custom footprints. |
-| [`cosmos-firelord/`](cosmos-firelord/README.md) | OpenC3 COSMOS stack with the FireLord LoRa plugin, Docker compose, and bridge config for a base-station FireLord node over USB serial. |
+| [`database-firelord/`](database-firelord/README.md) | Preferred: host-run USB logger that writes base-station packets into Postgres with a simple web viewer. |
 
 ---
 
@@ -68,12 +68,10 @@ Use the risk guidance below while planning; the most common issues are supply de
 
 ---
 
-## Ground Operations (COSMOS)
+## Ground Operations (Base-Station Logging)
 
-- Use `cosmos-firelord/` to run OpenC3 COSMOS locally and view the `LORA` target. Update `.env` secrets before exposing ports beyond localhost.  
-- Bridge a base-station FireLord node (USB serial) to COSMOS with the provided profile: `./openc3.sh cli bridge openc3-cosmos-lora/bridge.txt write_port_name=/dev/ttyACM0 baud_rate=115200 router_port=2950`. The plugin instance expects `host.docker.internal:2950`.  
-- Base-station firmware emits `DATA <nodeId> <ver> <ts> <tempCx100> <humidity> <co2> <pressure> <voc> <smoke> <flags>` on every validated packet; COSMOS tooling can key off that stable line alongside the `[RX]` log. Nodes are TX-only; no COSMOS commands defined.  
-- Container lifecycle: `./openc3.sh run` to start, `./openc3.sh stop` to halt; see `cosmos-firelord/README.md` for rebuild and reload steps.
+- Use `database-firelord/` for the lightweight flow: start Postgres via Docker (`start.sh` or `start.ps1`), run the host logger to read the base-station USB serial (set `SERIAL_PORT` to your COM/tty), and view recent packets in the bundled web viewer. See `database-firelord/README.md` for setup, dedup behavior, and testing without hardware.
+- The historical COSMOS stack used earlier is no longer part of this repo; the database-firelord logger is the supported path going forward.
 
 ---
 
