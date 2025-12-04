@@ -8,17 +8,21 @@ constexpr bool BASE_STATION_MODE = false;  // set false for normal sensor/uplink
 
 // ----- Configuration -------------------------------------------------------
 
-constexpr uint8_t DEVICE_ID            = 1;
-constexpr uint32_t SAMPLE_INTERVAL_MS  = 30000;   // 30 seconds between uplinks
+constexpr bool    SENSOR_DEBUG         = true;
+constexpr uint8_t DEVICE_ID            = 2;
+constexpr uint32_t SAMPLE_INTERVAL_MS  = 10000;   // SCD40 needs 5s between samples in periodic mode
 constexpr uint32_t LORA_FREQUENCY_HZ   = 915000000UL;
 //constexpr uint32_t LORA_FREQUENCY_HZ = 915125000UL;
 constexpr int      LORA_SPREADING_FACT = 7;
 constexpr int      LORA_BW_KHZ         = 125;
 constexpr int      LORA_PREAMBLE_LEN   = 12;
 constexpr int      LORA_TX_POWER_DBM   = 10;
+constexpr uint32_t I2C_CLOCK_HZ        = 100000UL; // slow for bring-up/debug (SCD40/MPL115 tolerate 100 kHz)
+constexpr uint32_t SCD40_MIN_INTERVAL_MS = 5000;   // SCD40 delivers data every 5s in periodic mode
 
 constexpr uint8_t VOC_PIN              = A0;       // D0
 constexpr uint8_t SMOKE_PIN            = A1;       // D1
+constexpr bool    ENABLE_DUMMY_READINGS = false;    // false disables seeded fallbacks
 
 // ----- Sensor state --------------------------------------------------------
 
@@ -35,6 +39,8 @@ float mplA0 = 0.0f;
 float mplB1 = 0.0f;
 float mplB2 = 0.0f;
 float mplC12 = 0.0f;
+uint32_t scd40StartMs = 0;
+uint32_t scd40LastReadMs = 0;
 
 UART_COMMS radio(Serial1, &Serial1);
 bool loraReady = false;
@@ -254,7 +260,15 @@ static bool mpl115a2Read(float &pressureKPa) {
 
 static void sensorsBegin() {
   scd40Active = scd40StartPeriodicMeasurement();
+  scd40StartMs = millis();
+  scd40LastReadMs = 0;
   mpl115a2Active = mpl115a2ReadCoefficients();
+  if (SENSOR_DEBUG) {
+    Serial.print(F("[SENSORS] SCD40 start "));
+    Serial.println(scd40Active ? F("OK") : F("FAIL"));
+    Serial.print(F("[SENSORS] MPL115A2 coeffs "));
+    Serial.println(mpl115a2Active ? F("OK") : F("FAIL"));
+  }
 }
 
 static Sample collectSample(uint32_t nowMs) {
@@ -264,12 +278,23 @@ static Sample collectSample(uint32_t nowMs) {
   float temperatureC = 0.0f;
   float humidityPct = 0.0f;
   uint16_t co2ppm = 0;
-  bool ambientOk = scd40Read(temperatureC, humidityPct, co2ppm);
+  bool ambientOk = false;
+  if (scd40Active && (nowMs - scd40StartMs) >= SCD40_MIN_INTERVAL_MS &&
+      (scd40LastReadMs == 0 || nowMs - scd40LastReadMs >= SCD40_MIN_INTERVAL_MS)) {
+    ambientOk = scd40Read(temperatureC, humidityPct, co2ppm);
+    if (ambientOk) scd40LastReadMs = nowMs;
+  }
 
   if (!ambientOk) {
-    temperatureC = 21.5f;
-    humidityPct = 45.0f;
-    co2ppm = 415;
+    if (SENSOR_DEBUG) {
+      Serial.println(F("[SENSORS] SCD40 read failed; using fallback/zeros"));
+    }
+    if (ENABLE_DUMMY_READINGS) {
+      temperatureC = 21.5f;
+      humidityPct = 45.0f;
+      co2ppm = 415;
+      sample.statusFlags |= 0x08; // mark fallback used
+    }
   } else {
     sample.statusFlags |= 0x01;
   }
@@ -277,7 +302,13 @@ static Sample collectSample(uint32_t nowMs) {
   float pressureKPa = 0.0f;
   bool pressureOk = mpl115a2Read(pressureKPa);
   if (!pressureOk) {
-    pressureKPa = 101.3f;
+    if (SENSOR_DEBUG) {
+      Serial.println(F("[SENSORS] MPL115A2 read failed; using fallback/zeros"));
+    }
+    if (ENABLE_DUMMY_READINGS) {
+      pressureKPa = 101.3f;
+      sample.statusFlags |= 0x08; // mark fallback used
+    }
   } else {
     sample.statusFlags |= 0x02;
   }
@@ -500,7 +531,10 @@ void setup() {
   if (!BASE_STATION_MODE) {
     pinMode(VOC_PIN, INPUT);
     pinMode(SMOKE_PIN, INPUT);
-    I2C::begin();
+    I2C::begin(I2C_CLOCK_HZ);
+    if (SENSOR_DEBUG) {
+      I2C::scan();
+    }
     sensorsBegin();
   }
 
