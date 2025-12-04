@@ -22,7 +22,7 @@ constexpr uint32_t SCD40_MIN_INTERVAL_MS = 5000;   // SCD40 delivers data every 
 
 constexpr uint8_t VOC_PIN              = A0;       // D0
 constexpr uint8_t SMOKE_PIN            = A1;       // D1
-constexpr bool    ENABLE_DUMMY_READINGS = false;    // false disables seeded fallbacks
+constexpr bool    ENABLE_DUMMY_READINGS = true;    // false disables seeded fallbacks
 
 // ----- Sensor state --------------------------------------------------------
 

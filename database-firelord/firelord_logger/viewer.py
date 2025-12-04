@@ -111,7 +111,8 @@ INDEX_TEMPLATE = """
         <table id="decodedTable">
           <thead>
             <tr>
-              <th>ID</th><th>Recorded</th><th>Node</th><th>TS</th><th>Temp C</th><th>Humidity</th><th>CO2</th><th>Flags</th>
+              <th>ID</th><th>Recorded</th><th>Node</th><th>TS</th>
+              <th>Temp (°C)</th><th>Humidity (%)</th><th>Smoke (ppm)</th><th>VOC (ppm)</th><th>CO2 (ppm)</th><th>Pressure (hPa)</th><th>Flags</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -124,6 +125,29 @@ INDEX_TEMPLATE = """
     const statusEl = document.getElementById('status');
     const rawList = document.getElementById('rawList');
     const tableBody = document.querySelector('#decodedTable tbody');
+
+    function formatNumber(value, digits) {
+      if (value === null || value === undefined || Number.isNaN(Number(value))) return '';
+      return Number(value).toFixed(digits);
+    }
+
+    function withUnit(value, unit) {
+      if (value === null || value === undefined || value === '') return '';
+      return `${value} ${unit}`;
+    }
+
+    function formatPressureHpa(pa) {
+      if (pa === null || pa === undefined || Number.isNaN(Number(pa))) return '';
+      return (Number(pa) / 100).toFixed(2);
+    }
+
+    function normalizeHumidity(value) {
+      if (value === null || value === undefined) return null;
+      const num = Number(value);
+      if (Number.isNaN(num)) return null;
+      // Some firmware reports humidity scaled by 100; if it's clearly >100%, scale it back down.
+      return num > 100 ? num / 100 : num;
+    }
 
     async function loadPackets() {
       try {
@@ -153,15 +177,25 @@ INDEX_TEMPLATE = """
     function renderTable(data) {
       tableBody.innerHTML = '';
       data.forEach(p => {
+        const temp = withUnit(formatNumber(p.temp_c, 2), '°C');
+        const humidity = withUnit(formatNumber(normalizeHumidity(p.humidity_pct), 1), '%');
+        const smoke = withUnit(p.smoke_raw, 'ppm');
+        const voc = withUnit(p.voc_raw, 'ppm');
+        const co2 = withUnit(p.co2_ppm, 'ppm');
+        const pressure = withUnit(formatPressureHpa(p.pressure_pa), 'hPa');
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${p.id}</td>
           <td>${p.recorded_at}</td>
           <td>${p.node_id}</td>
           <td>${p.device_ts}</td>
-          <td>${p.temp_c?.toFixed(2)}</td>
-          <td>${p.humidity_pct?.toFixed(1)}</td>
-          <td>${p.co2_ppm}</td>
+          <td>${temp}</td>
+          <td>${humidity}</td>
+          <td>${smoke}</td>
+          <td>${voc}</td>
+          <td>${co2}</td>
+          <td>${pressure}</td>
           <td>${p.flags}</td>
         `;
         tableBody.appendChild(tr);
